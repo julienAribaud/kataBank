@@ -8,5 +8,5 @@ public interface HistoryTransactionDao {
 
     void addTransaction(HistoryTransaction historyTransaction);
 
-    List<HistoryTransaction> getTransactions();
+    List<HistoryTransaction> getTransactions(Long accountId);
 }

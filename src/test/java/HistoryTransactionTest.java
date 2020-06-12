@@ -1,11 +1,11 @@
+import dao.AccountDao;
+import dao.HistoryTransactionDao;
 import model.HistoryTransaction;
 import model.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import services.AccountService;
 import services.BankService;
-import services.HistoryTransactionService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -14,10 +14,10 @@ import static org.mockito.Mockito.when;
 public class HistoryTransactionTest {
 
     @Mock
-    private AccountService accountService;
+    private AccountDao accountDao;
 
     @Mock
-    private HistoryTransactionService historyTransactionService;
+    private HistoryTransactionDao historyTransactionDao;
 
     @InjectMocks
     private BankService bankService;
@@ -29,11 +29,11 @@ public class HistoryTransactionTest {
 
     @Test
     public void deposit_morethan_one_cents_generate_an_history_transaction(){
-        bankService.makeDeposit(100D);
+        bankService.makeDeposit(100D,1L);
 
         ArgumentCaptor<HistoryTransaction> historyTransactionArgumentCaptor = ArgumentCaptor.forClass(HistoryTransaction.class);
 
-        verify(historyTransactionService,Mockito.times(1)).addTransaction(historyTransactionArgumentCaptor.capture());
+        verify(historyTransactionDao,Mockito.times(1)).addTransaction(historyTransactionArgumentCaptor.capture());
 
         HistoryTransaction historyTransaction = historyTransactionArgumentCaptor.getValue();
 
@@ -44,12 +44,12 @@ public class HistoryTransactionTest {
     @Test
     public void withdraw_with_no_overdraft_generate_an_history_transaction(){
 
-        when(accountService.getBalance()).thenReturn(300D);
-        bankService.makeWithDraw(200D);
+        when(accountDao.getBalance(1L)).thenReturn(300D);
+        bankService.makeWithDraw(200D,1L);
 
         ArgumentCaptor<HistoryTransaction> historyTransactionArgumentCaptor = ArgumentCaptor.forClass(HistoryTransaction.class);
 
-        verify(historyTransactionService,Mockito.times(1)).addTransaction(historyTransactionArgumentCaptor.capture());
+        verify(historyTransactionDao,Mockito.times(1)).addTransaction(historyTransactionArgumentCaptor.capture());
 
         HistoryTransaction historyTransaction = historyTransactionArgumentCaptor.getValue();
 

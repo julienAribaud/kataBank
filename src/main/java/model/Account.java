@@ -1,6 +1,6 @@
 package model;
 
-public class Account {
+public class Account{
 
     private final Double currentBalance;
 

@@ -1,33 +1,45 @@
 package services;
 
+import dao.AccountDao;
+import dao.HistoryTransactionDao;
 import model.HistoryTransaction;
 import model.Transaction;
 
+import java.util.List;
+
 public class BankService {
 
-    AccountService accountService;
-    HistoryTransactionService historyTransactionService;
+    AccountDao accountDao;
+    HistoryTransactionDao historyTransactionDao;
 
     public final static double MINIMUM_DEPOSIT_VALUE=0.01;
     public final static double OVERDRAFT_VALUE =0;
 
-    public BankService(AccountService accountService,HistoryTransactionService historyTransactionService) {
-        this.accountService = accountService;
-        this.historyTransactionService=historyTransactionService;
+    public BankService(AccountDao accountDao,HistoryTransactionDao historyTransactionDao) {
+        this.accountDao = accountDao;
+        this.historyTransactionDao=historyTransactionDao;
     }
 
-    public void makeDeposit(Double amount){
+    public void makeDeposit(Double amount,Long accountID){
         if(amount>MINIMUM_DEPOSIT_VALUE)
-            persitOperation(Transaction.DEPOSIT,amount);
+            persitOperation(Transaction.DEPOSIT,amount,accountID);
     }
 
-    public void makeWithDraw(Double amount){
-        if(accountService.getBalance()>OVERDRAFT_VALUE && amount>0)
-            persitOperation(Transaction.WITHDRAW,-amount);
+    public void makeWithDraw(Double amount,Long accountID){
+        if(accountDao.getBalance(accountID)>OVERDRAFT_VALUE && amount>0)
+            persitOperation(Transaction.WITHDRAW,-amount,accountID);
     }
 
-    private void persitOperation(Transaction transaction,Double amount){
-        accountService.updateBalance(amount);
-        historyTransactionService.addTransaction(new HistoryTransaction(transaction,amount));
+    public Double getBalance(Long accountID){
+        return accountDao.getBalance(accountID);
+    }
+
+    public List<HistoryTransaction> getTransactions(Long accountID){
+        return historyTransactionDao.getTransactions(accountID);
+    }
+
+    private void persitOperation(Transaction transaction,Double amount,Long accountID){
+        accountDao.updateBalance(accountID,amount);
+        historyTransactionDao.addTransaction(new HistoryTransaction(transaction,amount,accountID));
     }
 }

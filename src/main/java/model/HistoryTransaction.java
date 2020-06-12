@@ -1,13 +1,15 @@
 package model;
 
-public class HistoryTransaction {
+public class HistoryTransaction{
 
     Transaction transaction;
     Double amount;
+    Long accountID;
 
-    public HistoryTransaction(Transaction transaction,Double amount) {
+    public HistoryTransaction(Transaction transaction,Double amount,Long accountID) {
         this.transaction = transaction;
         this.amount=amount;
+        this.accountID=accountID;
     }
 
     public Transaction getTransaction() {
