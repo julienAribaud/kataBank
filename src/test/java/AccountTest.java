@@ -8,24 +8,38 @@ public class AccountTest {
 
     @BeforeEach
     public void init(){
-        account =new Account();
+        account =new Account(0D);
     }
 
     @Test
-    public void Deposit_under_one_cents_not_allowed(){
+    public void deposit_underthan_one_cents_not_allowed(){
 
         assertThat(account.makeDeposit(-100)).isFalse();
     }
 
     @Test
-    public void deposit_equals_one_cents_not_allowed(){
+    public void deposit_of_one_cents_not_allowed(){
 
         assertThat(account.makeDeposit(0.01)).isFalse();
     }
 
     @Test
-    public void deposit_more_one_cents_allowed(){
+    public void deposit_morethan_one_cents_allowed(){
 
         assertThat(account.makeDeposit(100)).isTrue();
     }
+
+    @Test
+    public void withdraw_with_overdraft_client_not_allowed_(){
+
+        assertThat(account.makeWithdraw()).isFalse();
+    }
+
+    @Test
+    public void withdraw_with_no_overdraft_client_allowed_(){
+
+        account=new Account(100D);
+        assertThat(account.makeWithdraw()).isTrue();
+    }
+
 }
