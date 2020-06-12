@@ -8,11 +8,15 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import services.AccountService;
 import services.BankService;
+import services.HistoryTransactionService;
 
 public class BankServiceTest {
 
     @Mock
     private AccountService accountService;
+
+    @Mock
+    private HistoryTransactionService historyTransactionService;
 
     @InjectMocks
     private BankService bankService;
