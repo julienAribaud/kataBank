@@ -2,7 +2,7 @@ package model;
 
 public class Account{
 
-    private final Double currentBalance;
+    private Double currentBalance;
 
     public Account(Double currentBalance) {
         this.currentBalance = currentBalance;
@@ -10,5 +10,9 @@ public class Account{
 
     public double getCurrentBalance(){
         return currentBalance;
+    }
+
+    public void updateBalance(Double amount) {
+        this.currentBalance+=amount;
     }
 }

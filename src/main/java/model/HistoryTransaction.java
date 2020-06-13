@@ -19,4 +19,8 @@ public class HistoryTransaction{
     public Double getAmount() {
         return amount;
     }
+
+    public Long getAcountID() {
+        return accountID;
+    }
 }
